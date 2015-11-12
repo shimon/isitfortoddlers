@@ -1,13 +1,80 @@
 <html>
-<head>
-<style>
-h1 {
-  font-size: 96px;
-  padding-top: 40px;
-  text-align: center;
-}
-</style>
-</head>
-<body>
-<h1>NO</h1>
-</body>
+    <!--
+         Is It For Toddlers, v0.2
+
+         Originally Josh Ain, forked & updated by Shimon Rura
+
+         This file is in the public domain. Feel free to use it however you want.
+       -->
+    <head>
+        <style>
+         body {
+             font-family: sans-serif;
+             text-align: center;
+             background: white;
+             color: black;
+         }
+         a.reset { color: blue; }
+         h1 {
+             font-size: 96px;
+             padding-top: 40px;
+         }
+         input, button { font-size: 32px; }
+         .hidden { display: none; }
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    </head>
+    <body>
+        <div class="page page-initial">
+            <h1>Is it for toddlers?</h1>
+            <form style="text-align:center">
+                <input type="text" name="query" width="100" autofocus/>
+                <button type="submit">Get Answer</button>
+            </form>
+        </div>
+        <div class="page page-result-no hidden">
+            <h1>No, <span class="that-thing">that</span> is <em>not</em> for toddlers.</h1>
+            <p>
+                <a href="#" class="reset">Ask again</a>
+            </p>
+        </div>
+        <div class="page page-result-yes hidden">
+            <h1>Yes, <span class="that-thing">that</span> <em>is</em> for toddlers!</h1>
+            <p>
+                <a href="#" class="reset">Ask again</a>
+            </p>
+        </div>
+        <script type="text/javascript">
+         $(function() {
+             var mode= "no";
+
+             $(".reset").on("click", function() {
+                 $("input[name=query]").val("");
+                 $(".page").hide();
+                 $(".page-initial").show();
+                 $("input:visible:first").focus();
+                 return false;
+             });
+             $("form").on("submit", function() {
+                 var entered_value = $("input[name=query]").val();
+                 if(!entered_value) {
+                     alert("Please tell us what object you're wondering about.");
+                 } else {
+                     $(".page").hide();
+                     $(".that-thing").text(entered_value);
+                     $(".page-result-" + mode).show();
+                     $(".reset:visible:first").focus();
+                 }
+                 return false;
+             });
+             $("button").on("click", function(e) {
+                 if(e.shiftKey) {
+                     mode = "yes";
+                 } else {
+                     mode = "no";
+                 }
+             });
+         });
+        </script>
+    </body>
+</html>
