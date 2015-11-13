@@ -1,9 +1,7 @@
 <html>
-    <!--
+       <!--
          Is It For Toddlers, v0.2
-
          Originally Josh Ain, forked & updated by Shimon Rura
-
          This file is in the public domain. Feel free to use it however you want.
        -->
     <head>
@@ -16,11 +14,31 @@
          }
          a.reset { color: blue; }
          h1 {
-             font-size: 96px;
+             font-size: 66px;
              padding-top: 40px;
+             font-weight: normal;
          }
          input, button { font-size: 32px; }
          .hidden { display: none; }
+         .that-thing {
+           color: green;
+         }
+         h1 em {
+           color: red;
+           font-weight: bold;
+         }
+         .that-thing, h1 em {
+           font-size: 96px;
+         }
+         .plural {
+           display: none;
+         }
+         .pluralbody .single {
+           display: none;
+         }
+         .pluralbody .plural {
+           display: inline;
+         }
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
         <title>Is it for toddlers?</title>
@@ -35,21 +53,23 @@
             </form>
         </div>
         <div class="page page-result-no hidden">
-            <h1>No, <span class="that-thing">that</span> is <em>not</em> for toddlers.</h1>
+            <h1>No, <span class="that-thing">that</span> <span class="single">is</span><span class="plural">are</span> <em>not</em> for toddlers.</h1>
             <p>
                 <a href="#" class="reset">Ask again</a>
             </p>
         </div>
         <div class="page page-result-yes hidden">
-            <h1>Yes, <span class="that-thing">that</span> <em>is</em> for toddlers!</h1>
+            <h1>Yes, <span class="that-thing">that</span> <em><span class="single">is</span><span class="plural">are</span></em> for toddlers!</h1>
             <p>
                 <a href="#" class="reset">Ask again</a>
             </p>
         </div>
         <script type="text/javascript">
          $(function() {
+             function endsWith(str, suffix) {
+               return str.indexOf(suffix, str.length - suffix.length) !== -1;
+             }
              var mode= "no";
-
              $(".reset").on("click", function() {
                  $("input[name=query]").val("");
                  $(".page").hide();
@@ -62,6 +82,11 @@
                  if(!entered_value) {
                      alert("Please tell us what object you're wondering about.");
                  } else {
+                     if (endsWith(entered_value, "s")) {
+                       $("body").addClass("pluralbody");
+                     } else {
+                       $("body").removeClass("pluralbody");
+                     }
                      $(".page").hide();
                      $(".that-thing").text(entered_value);
                      $(".page-result-" + mode).show();
